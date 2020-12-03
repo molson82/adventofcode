@@ -16,7 +16,6 @@ func check(err error) {
 }
 
 func readInput(file string) (int, int) {
-
 	f, err := os.Open(file)
 	defer f.Close()
 	check(err)
