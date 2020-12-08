@@ -60,53 +60,104 @@ func countValidPassports(passports []map[string]string) int {
 	return count
 }
 
-// All of this code is terrible. I'm going for simple not best. Refactor later hopefully
-func countValidPart2(passports []map[string]string) int {
-	var count int
-	for _, v := range passports {
-		if val, ok := v["byr"]; ok {
-			n, _ := strconv.Atoi(val)
-			if len(val) == 4 && n >= 1920 && n <= 2002 {
-				if val, ok := v["iyr"]; ok {
-					n, _ := strconv.Atoi(val)
-					if len(val) == 4 && n >= 2010 && n <= 2020 {
-						if val, ok := v["eyr"]; ok {
-							n, _ := strconv.Atoi(val)
-							if len(val) == 4 && n >= 2020 && n <= 2030 {
-								if val, ok := v["hgt"]; ok {
-									if strings.Contains(val, "cm") {
-										n, _ := strconv.Atoi(strings.Split(val, "cm")[1])
-										if n < 150 || n > 193 {
-											continue
-										}
-									} else if strings.Contains(val, "in") {
-										n, _ := strconv.Atoi(strings.Split(val, "in")[1])
-										if n < 59 || n > 76 {
-											continue
-										}
-									}
-									if val, ok := v["hcl"]; ok {
-										r, _ := regexp.Compile(`(?m)#([0-9]|[a-f]){6}`)
-										if r.MatchString(val) {
-											if val, ok := v["ecl"]; ok {
-												if val == "amb" || val == "blu" || val == "brn" || val == "gry" ||
-													val == "grn" || val == "hzl" || val == "oth" {
-													if val, ok := v["pid"]; ok {
-														r, _ := regexp.Compile(`(?m)[0-9]{9}`)
-														if r.MatchString(val) {
-															count++
-														}
-													}
-												}
-											}
-										}
-									}
-								}
+func validateByrValue(v string) bool {
+	i, _ := strconv.Atoi(v)
+
+	return i >= 1920 && i <= 2002
+}
+
+func validateIyrValue(v string) bool {
+	i, _ := strconv.Atoi(v)
+
+	return i >= 2010 && i <= 2020
+}
+
+func validateEyrValue(v string) bool {
+	i, _ := strconv.Atoi(v)
+
+	return i >= 2020 && i <= 2030
+}
+
+func validateHgtValue(v string) bool {
+	if strings.HasSuffix(v, "in") {
+		splitOnIn := strings.Split(v, "in")
+		i, _ := strconv.Atoi(splitOnIn[0])
+		return i >= 59 && i <= 76
+	}
+	if strings.HasSuffix(v, "cm") {
+		splitOnIn := strings.Split(v, "cm")
+		i, _ := strconv.Atoi(splitOnIn[0])
+		return i >= 150 && i <= 193
+	}
+	return false
+}
+
+func validateHclValue(v string) bool {
+	valid, _ := regexp.MatchString("^#[0-9a-f]{6}", v)
+	return valid
+}
+
+func validateEclValue(v string) bool {
+	return v == "amb" || v == "blu" || v == "brn" || v == "gry" || v == "grn" || v == "hzl" || v == "oth"
+}
+
+func validatePidValue(v string) bool {
+	valid, _ := regexp.MatchString("^[0-9]{9}", v)
+	return valid && len(v) == 9
+}
+
+func areValuesValid(fieldToValue map[string]string) bool {
+	for field, value := range fieldToValue {
+		if field == "byr" && !validateByrValue(value) {
+			return false
+		}
+		if field == "iyr" && !validateIyrValue(value) {
+			return false
+		}
+		if field == "eyr" && !validateEyrValue(value) {
+			return false
+		}
+		if field == "hgt" && !validateHgtValue(value) {
+			return false
+		}
+		if field == "hcl" && !validateHclValue(value) {
+			return false
+		}
+		if field == "ecl" && !validateEclValue(value) {
+			return false
+		}
+		if field == "pid" && !validatePidValue(value) {
+			return false
+		}
+	}
+	return true
+}
+
+func areFieldsValid(v map[string]string) bool {
+	if _, ok := v["byr"]; ok {
+		if _, ok := v["iyr"]; ok {
+			if _, ok := v["eyr"]; ok {
+				if _, ok := v["hgt"]; ok {
+					if _, ok := v["hcl"]; ok {
+						if _, ok := v["ecl"]; ok {
+							if _, ok := v["pid"]; ok {
+								return true
 							}
 						}
 					}
 				}
 			}
+		}
+	}
+	return false
+}
+
+// All of this code is terrible. I'm going for simple not best. Refactor later hopefully
+func countValidPart2(passports []map[string]string) int {
+	var count int
+	for _, v := range passports {
+		if areValuesValid(v) && areFieldsValid(v) {
+			count++
 		}
 	}
 	return count
@@ -118,7 +169,9 @@ Part 1
 	 - I was solving for the wrong thing. Remembered the problem wrong
  - attempt 2 = 182 | correct
 Part 2
- - attempt 1 =
+ - attempt 1 = 1 | wrong
+		 - no surprise there. Made the code way to complicated. Need to simplify it
+ - attempt 2 = 109 | correct
 */
 func main() {
 	passports := readInput("input.txt")
