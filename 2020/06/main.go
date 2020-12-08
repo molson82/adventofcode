@@ -98,7 +98,7 @@ func partTwo(groups []group) int {
 				}
 			}
 		}
-		fmt.Printf("group: %v | Count: %v\n", j, count)
+		fmt.Printf("%v | group: %v | Count: %v\n", g.people, j, count)
 		total += count
 	}
 
