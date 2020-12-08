@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 )
 
 func check(err error) {
@@ -70,14 +71,40 @@ func partone(list []string) int {
 	return highest
 }
 
+// smallest sid = 7
+// largest sid = 908
+func partTwo(list []string) int {
+	var sidList []int
+	for _, v := range list {
+		row := getRow(v)
+		col := getColumn(v)
+		sID := (row * 8) + col
+		sidList = append(sidList, sID)
+	}
+	sort.Ints(sidList)
+	// find missing number from 7 - 908
+	check := 7
+	for _, v := range sidList {
+		if v == check {
+			check++
+		} else {
+			break
+		}
+	}
+	return check
+}
+
 /*
 Part 1
  - attempt 1 = 908 | correct
 Part 2
- - attempt 1 =
+ - attempt 1 = 619 | correct
 */
 func main() {
 	fmt.Println("Advent of Code day 5")
 	bplist := readInput("input.txt")
-	fmt.Printf("Day 5 part 1: %v\n", partone(bplist))
+	fmt.Printf("Day 5 Part 1 ---------------------------------\n")
+	fmt.Printf("Highest sID: %v\n", partone(bplist))
+	fmt.Printf("\nDay 5 Part 2 ---------------------------------\n")
+	fmt.Printf("My sID: %v\n", partTwo(bplist))
 }

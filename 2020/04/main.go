@@ -176,8 +176,8 @@ Part 2
 func main() {
 	passports := readInput("input.txt")
 	fmt.Println("Advent of Code day 4")
-	fmt.Printf("Day 3 Part 1 ---------------------------------\n")
+	fmt.Printf("Day 4 Part 1 ---------------------------------\n")
 	fmt.Printf("Total Valid: %v\n", countValidPassports(passports))
-	fmt.Printf("\nDay 3 Part 1 ---------------------------------\n")
+	fmt.Printf("\nDay 4 Part 2 ---------------------------------\n")
 	fmt.Printf("Total Valid: %v\n", countValidPart2(passports))
 }
