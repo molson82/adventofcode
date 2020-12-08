@@ -82,17 +82,23 @@ func readInputPart2(file string) []group {
 
 func partTwo(groups []group) int {
 	total := 0
-	for _, g := range groups {
-		str := ""
+	for j, g := range groups {
 		count := 0
-		for _, p := range g.people {
-			for _, q := range p.questions {
-				str += string(q)
-				if strings.Contains(str, string(q)) {
-					count++
+		if len(g.people) == 1 {
+			count += len(g.people[0].questions)
+		} else {
+			per := g.people[0]
+			str := ""
+			for i := 1; i < len(g.people); i++ {
+				for _, q := range per.questions {
+					if !strings.Contains(str, string(q)) && strings.Contains(g.people[i].questions, string(q)) {
+						count++
+						str += g.people[i].questions
+					}
 				}
 			}
 		}
+		fmt.Printf("group: %v | Count: %v\n", j, count)
 		total += count
 	}
 
@@ -101,9 +107,11 @@ func partTwo(groups []group) int {
 
 /*
 Part 1
- - attempt 1 = 6170
+ - attempt 1 = 6170 | correct
 Part 2
- - attempt 1 =
+ - attempt 1 = 513 | wrong
+		 - need to update / simplify part 2 question logic
+ - attempt 2 =
 */
 func main() {
 	fmt.Println("Advent of Code day 6")
