@@ -82,23 +82,28 @@ func readInputPart2(file string) []group {
 
 func partTwo(groups []group) int {
 	total := 0
-	for j, g := range groups {
+	for _, g := range groups {
 		count := 0
 		if len(g.people) == 1 {
 			count += len(g.people[0].questions)
 		} else {
 			per := g.people[0]
 			str := ""
-			for i := 1; i < len(g.people); i++ {
-				for _, q := range per.questions {
+			for _, q := range per.questions {
+				num := 0
+				for i := 1; i < len(g.people); i++ {
 					if !strings.Contains(str, string(q)) && strings.Contains(g.people[i].questions, string(q)) {
-						count++
-						str += g.people[i].questions
+						num++
+					} else {
+						break
 					}
+				}
+				if num == len(g.people)-1 {
+					count++
+					str += string(q)
 				}
 			}
 		}
-		fmt.Printf("%v | group: %v | Count: %v\n", g.people, j, count)
 		total += count
 	}
 
@@ -111,7 +116,12 @@ Part 1
 Part 2
  - attempt 1 = 513 | wrong
 		 - need to update / simplify part 2 question logic
- - attempt 2 =
+ - attempt 2 = 3116 | wrong
+		 - I only need to compare the first two people in the group. NOT every person
+ - attempt 3 = 3019 | wrong
+		 - Wait, I was wrong. I do need to check every person in the group. This is confusing
+		 - I needed to flip my loop. Iterate over questions first, then each person in the group
+ - attempt 4 = 2947 | correct
 */
 func main() {
 	fmt.Println("Advent of Code day 6")
@@ -119,7 +129,7 @@ func main() {
 	fmt.Printf("Day 6 Part 1 ---------------------------------\n")
 	fmt.Printf("Sum: %v\n", partOne(groupList))
 
-	gList2 := readInputPart2("sample.txt")
+	gList2 := readInputPart2("input.txt")
 	fmt.Printf("\nDay 6 Part 2 ---------------------------------\n")
 	fmt.Printf("Sum: %v\n", partTwo(gList2))
 }
