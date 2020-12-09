@@ -69,6 +69,12 @@ func readInput(file string) map[string]bag {
 	return bagMap
 }
 
+func partOne(input []bag) int {
+	total := 0
+
+	return total
+}
+
 /*
 Part 1
  - attempt 1 =
@@ -77,8 +83,8 @@ Part 2
 */
 func main() {
 	fmt.Println("Advent of Code day 7")
-	readInput("input.txt")
+	input := readInput("sample.txt")
 	fmt.Printf("Day 7 Part 1 ---------------------------------\n")
-
+	fmt.Printf("Total Gold bags: %v\n", input)
 	fmt.Printf("\nDay 7 Part 2 ---------------------------------\n")
 }
