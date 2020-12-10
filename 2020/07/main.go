@@ -69,22 +69,83 @@ func readInput(file string) map[string]bag {
 	return bagMap
 }
 
-func partOne(input []bag) int {
-	total := 0
+func contains(slice []string, val string) bool {
+	for _, v := range slice {
+		if v == val {
+			return true
+		}
+	}
+	return false
+}
 
+func findGold(bagMap map[string]bag) []string {
+	var goldBagParents []string
+	for _, bag := range bagMap {
+		for _, v := range bag.bags {
+			if v.color == "shiny gold" {
+				goldBagParents = append(goldBagParents, bag.color)
+			}
+		}
+	}
+	return goldBagParents
+}
+
+func verifyGold(bag bag) bool {
+	if len(bag.bags) == 0 || bag.color == "shiny gold" {
+		return false
+	}
+	// fmt.Printf("Checking bag: %v\n", bag)
+	for _, b := range bag.bags {
+		if contains(goldBagParents, b.color) {
+			// fmt.Printf("found gold parent: %v\n", b.color)
+			goldBagParents = append(goldBagParents, bag.color)
+			return true
+		}
+		// fmt.Printf("nothing found\n")
+		return verifyGold(b)
+	}
+	return false
+}
+
+var goldBagParents = findGold(readInput("input.txt"))
+
+func partOne(bagMap map[string]bag) int {
+	total := len(goldBagParents)
+	// fmt.Printf("%v\n%v\n", goldBagParents, len(goldBagParents))
+	for _, bag := range bagMap {
+		// fmt.Printf("On bag: %v\n", bag)
+		for _, v := range bag.bags {
+			if contains(goldBagParents, v.color) {
+				// fmt.Printf("Found Gold: %v\n", bag.color)
+				total++
+				break
+			} else {
+				if verifyGold(bagMap[v.color]) {
+					// fmt.Printf("Found Gold: %v\n", bag.color)
+					total++
+					break
+				}
+			}
+		}
+	}
 	return total
 }
 
 /*
 Part 1
- - attempt 1 =
+ - attempt 1 = 21 | wrong
+		 - it's too low. I need to iterate over the other bags that may lead to one in the list of gold parent bags.
+ - attempt 2 = 26 | wrong
+		 - same
+ - attempt 3 = 37 | wrong
+     - Logic probably isn't write
 Part 2
  - attempt 1 =
 */
 func main() {
 	fmt.Println("Advent of Code day 7")
-	input := readInput("sample.txt")
+	input := readInput("input.txt")
 	fmt.Printf("Day 7 Part 1 ---------------------------------\n")
-	fmt.Printf("Total Gold bags: %v\n", input)
+	fmt.Printf("Total Gold bags: %v\n", partOne(input))
 	fmt.Printf("\nDay 7 Part 2 ---------------------------------\n")
 }
