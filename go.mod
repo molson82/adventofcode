@@ -1,3 +1,3 @@
 module github.com/molson82/adventofcode
 
-go 1.14
+go 1.16
