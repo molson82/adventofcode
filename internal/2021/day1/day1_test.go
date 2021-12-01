@@ -23,7 +23,9 @@ var _ = Describe("Day1", func() {
 
 	Context("Part 1 input", func() {
 		It("should equal 2,000", func() {
-			Expect(len(utils.ReadInput(inputFile))).To(Equal(2000))
+			input := utils.ReadInput(inputFile)
+			Expect(len(input)).To(Equal(2000))
+			Expect(input[len(input)-1]).To(Equal("8895"))
 		})
 	})
 
