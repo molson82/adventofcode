@@ -21,17 +21,18 @@ var _ = Describe("Day1", func() {
 		})
 	})
 
-	Context("Part 1 input", func() {
-		It("should equal 2,000", func() {
-			input := utils.ReadInput(inputFile)
-			Expect(len(input)).To(Equal(2000))
-			Expect(input[len(input)-1]).To(Equal("8895"))
+	Context("Part 1 solution", func() {
+		Context("Input file", func() {
+			It("should equal len 2,000", func() {
+				input := utils.ReadInput(inputFile)
+				Expect(len(input)).To(Equal(2000))
+				Expect(input[len(input)-1]).To(Equal("8895"))
+			})
 		})
-	})
-
-	Context("Part 1 ans", func() {
-		It("should equal 1616", func() {
-			Expect(day1.Part1(utils.ReadInput(inputFile))).To(Equal(1616))
+		Context("Answer", func() {
+			It("should equal 1616", func() {
+				Expect(day1.Part1(utils.ReadInput(inputFile))).To(Equal(1616))
+			})
 		})
 	})
 })
