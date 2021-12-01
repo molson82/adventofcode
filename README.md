@@ -15,3 +15,8 @@ The solutions posted here are NOT cleaned-up versions and I will not be aiming f
 ## Thanks!
 
 Many thanks to [Eric Wastl](http://was.tl/), who creates Advent of Code, as well as to the amazing community over at [/r/adventofcode](https://www.reddit.com/r/adventofcode/)!
+
+```
+cd internal/day1
+go test -v ./ -coverprofile=./coverage.out -coverpkg ./... -cpuprofile ./cpu.out -memprofile ./mem.out
+```
