@@ -41,4 +41,12 @@ var _ = Describe("Day1", func() {
 			})
 		})
 	})
+
+	Describe("Part 2 Solution", func() {
+		Context("Answer", func() {
+			It("should equal 1645", func() {
+				Expect(day1.Part2(utils.ReadInput(inputFile))).To(Equal(1645))
+			})
+		})
+	})
 })
