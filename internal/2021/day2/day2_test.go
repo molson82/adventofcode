@@ -21,10 +21,24 @@ var _ = Describe("Day2", func() {
 		})
 	})
 
+	Context("Part 2 Sample", func() {
+		It("should equal 900", func() {
+			Expect(day2.Part2(sampleInput)).To(Equal(900))
+		})
+	})
+
 	Describe("Part 1 Solution", func() {
 		Context("Answer", func() {
 			It("should equal ", func() {
 				Expect(day2.Part1(utils.ReadInput(inputFile))).To(Equal(2039912))
+			})
+		})
+	})
+
+	Describe("Part 2 Solution", func() {
+		Context("Answer", func() {
+			It("should equal ", func() {
+				Expect(day2.Part2(utils.ReadInput(inputFile))).To(Equal(1942068080))
 			})
 		})
 	})
