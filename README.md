@@ -1,8 +1,6 @@
-<p align="center"><img src="aoc20.png"></p>
+**2020** **2021**
 
-**2020**
-
-Here lies my solutions to [Advent of Code 2020](https://adventofcode.com/2020), an Advent calendar full of programming puzzles from December 1st all the way to Christmas.
+Here lies my solutions to [Advent of Code 2021](https://adventofcode.com/2021), an Advent calendar full of programming puzzles from December 1st all the way to Christmas.
 ## Implementation Goals
 
 The solutions posted here are NOT cleaned-up versions and I will not be aiming for the leaderboards. For all solutions, the main implementation goals were, in descending order:
