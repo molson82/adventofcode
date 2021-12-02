@@ -11,9 +11,8 @@ type direction struct {
 	count int
 }
 
-func Part1(input []string) int {
+func createDirList(input []string) []direction {
 	var dirs []direction
-	// convert each line to a list of structs
 	for _, v := range input {
 		s := strings.Split(v, " ")
 		c := utils.Str_to_Int(s[1])
@@ -21,9 +20,13 @@ func Part1(input []string) int {
 		dirs = append(dirs, dir)
 	}
 
-	// do calculation
+	return dirs
+}
+
+func Part1(input []string) int {
 	var depth int
 	var horiz int
+	dirs := createDirList(input)
 	for _, v := range dirs {
 		if v.dir == "up" {
 			depth -= v.count
@@ -38,19 +41,10 @@ func Part1(input []string) int {
 }
 
 func Part2(input []string) int {
-	var dirs []direction
-	// convert each line to a list of structs
-	for _, v := range input {
-		s := strings.Split(v, " ")
-		c := utils.Str_to_Int(s[1])
-		dir := direction{s[0], c}
-		dirs = append(dirs, dir)
-	}
-
-	// do calculation
 	var depth int
 	var horiz int
 	var aim int
+	dirs := createDirList(input)
 	for _, v := range dirs {
 		if v.dir == "up" {
 			aim -= v.count
