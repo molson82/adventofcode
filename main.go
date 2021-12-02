@@ -13,5 +13,6 @@ func main() {
 	// attempt 1: 1615 = too low
 	// attempt 2: 1616 = correct
 	log.Printf("2021 Day 1 Part 1: %v", day1.Part1(utils.ReadInput("inputs/day1_input.txt")))
-	log.Printf("2021 Day 1 Part 2: %v", 404)
+	// attempt 1: 1645 = correct
+	log.Printf("2021 Day 1 Part 2: %v", day1.Part2(utils.ReadInput("inputs/day1_input.txt")))
 }

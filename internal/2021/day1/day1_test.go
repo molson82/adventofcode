@@ -21,7 +21,13 @@ var _ = Describe("Day1", func() {
 		})
 	})
 
-	Context("Part 1 solution", func() {
+	Context("Part 2 Sample", func() {
+		It("should equal 5", func() {
+			Expect(day1.Part2(sampleInput)).To(Equal(5))
+		})
+	})
+
+	Describe("Part 1 solution", func() {
 		Context("Input file", func() {
 			It("should equal len 2,000", func() {
 				input := utils.ReadInput(inputFile)
