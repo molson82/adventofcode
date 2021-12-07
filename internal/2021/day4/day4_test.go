@@ -33,4 +33,13 @@ var _ = Describe("Day4", func() {
 			})
 		})
 	})
+
+	Describe("Part 2", func() {
+		Context("Answer", func() {
+			It("should equal ...", func() {
+				// too high
+				Expect(day4.Part2(utils.ReadInput(inputFile))).To(Not(Equal(15960)))
+			})
+		})
+	})
 })
