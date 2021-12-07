@@ -23,7 +23,7 @@ func (l line) print() {
 	fmt.Printf("\n")
 }
 
-func (l line) drawOnGraph(graph *grid) {
+func (l line) drawOnGraph(graph *grid, part2 bool) {
 	// check if horizontal line
 	if l[0].y == l[1].y {
 		for i := range graph[l[0].y] {
@@ -44,6 +44,25 @@ func (l line) drawOnGraph(graph *grid) {
 				graph[l[0].y-i][l[0].x]++
 			} else {
 				graph[l[0].y+i][l[0].x]++
+			}
+		}
+	} else if part2 {
+		// diagonal lines at 45 degrees
+		if l[0].y > l[1].y {
+			for k := 0; k <= int(math.Abs(float64(l[0].y-l[1].y))); k++ {
+				if l[0].x > l[1].x {
+					graph[l[1].y+k][l[1].x+k]++
+				} else {
+					graph[l[1].y+k][l[1].x-k]++
+				}
+			}
+		} else {
+			for k := 0; k <= int(math.Abs(float64(l[0].y-l[1].y))); k++ {
+				if l[0].x > l[1].x {
+					graph[l[1].y-k][l[1].x+k]++
+				} else {
+					graph[l[0].y+k][l[0].x+k]++
+				}
 			}
 		}
 	}
@@ -89,7 +108,7 @@ func Part1(input []string) int {
 
 	// lines parsed. Now need to draw them all on the graph
 	for _, v := range lines {
-		v.drawOnGraph(&graph)
+		v.drawOnGraph(&graph, false)
 	}
 	// graph.print()
 
@@ -112,9 +131,8 @@ func Part2(input []string) int {
 
 	// lines parsed. Now need to draw them all on the graph
 	for _, v := range lines {
-		v.drawOnGraph(&graph)
+		v.drawOnGraph(&graph, true)
 	}
-	// graph.print()
 
 	return graph.calculate()
 }
