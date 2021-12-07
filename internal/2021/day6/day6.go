@@ -6,7 +6,7 @@ import (
 	"github.com/molson82/adventofcode/pkg/utils"
 )
 
-func Part1(input []string, numOfDays int) int {
+func Solution(input []string, numOfDays int) int {
 	fish := utils.StrList_to_IntList(strings.Split(input[0], ","))
 
 	fishMap := make(map[int]int, 8)
