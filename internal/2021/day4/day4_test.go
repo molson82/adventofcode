@@ -39,6 +39,10 @@ var _ = Describe("Day4", func() {
 			It("should equal ...", func() {
 				// too high
 				Expect(day4.Part2(utils.ReadInput(inputFile))).To(Not(Equal(15960)))
+				// too high
+				Expect(day4.Part2(utils.ReadInput(inputFile))).To(Not(Equal(22448)))
+				Expect(day4.Part2(utils.ReadInput(inputFile))).To(Not(Equal(6912)))
+				Expect(day4.Part2(utils.ReadInput(inputFile))).To(Not(Equal(13039)))
 			})
 		})
 	})

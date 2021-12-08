@@ -2,7 +2,6 @@ package day4
 
 import (
 	"fmt"
-	"log"
 	"regexp"
 	"strings"
 
@@ -142,26 +141,24 @@ func Part2(input []string) int {
 	}
 	boardList = append(boardList, b)
 
+	var lastScore int
 	drawOrder := utils.StrList_to_IntList(strings.Split(input[0], ","))
 	for _, v := range drawOrder {
-		for i, j := range boardList {
+		for _, j := range boardList {
 			j.drawNumber(v)
-			if j.checkBoard() {
-				if len(boardList) == 1 {
-					log.Printf("last winner on num %v", v)
-					j.print()
-					return j.calculateScore() * v
-				} else {
-					log.Printf("%+v", i)
+			for i, k := range boardList {
+				if k.checkBoard() {
 					if i+1 > len(boardList) {
 						boardList = boardList[:len(boardList)-1]
 					} else {
 						boardList = append(boardList[:i], boardList[i+1:]...)
 					}
+					lastScore = j.calculateScore() * v
+					break
 				}
 			}
 		}
 	}
 
-	return 0
+	return lastScore
 }
