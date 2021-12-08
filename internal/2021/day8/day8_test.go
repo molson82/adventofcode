@@ -15,9 +15,16 @@ const (
 var _ = Describe("Day8", func() {
 
 	Context("Part 1 Sample", func() {
-		It("should equal ...", func() {
-			Expect(day8.Part1(utils.ReadInput("sample_input.txt"))).To(Equal(99))
+		It("should equal 26", func() {
+			Expect(day8.Part1(utils.ReadInput("sample_input.txt"))).To(Equal(26))
 		})
 	})
 
+	Describe("Part 1", func() {
+		Context("Answer", func() {
+			It("should equal 440", func() {
+				Expect(day8.Part1(utils.ReadInput(inputFile))).To(Equal(440))
+			})
+		})
+	})
 })
