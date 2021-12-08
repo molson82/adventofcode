@@ -1,4 +1,5 @@
-**2020** **2021**
+**2020** ⎜ **2021**
+12⭐️ ⎜14⭐️ 
 
 Here lies my solutions to [Advent of Code 2021](https://adventofcode.com/2021), an Advent calendar full of programming puzzles from December 1st all the way to Christmas.
 ## Implementation Goals
@@ -7,12 +8,11 @@ The solutions posted here are NOT cleaned-up versions and I will not be aiming f
 
 * **Readability:** Clean, readable, self-explanatory and commented code above all else.
 * **Input Generalization:** Should work not only for my input but for anyone's, with some assumptions made about it, which are noted when appropriate. 
-* **Speed:** Use efficient algorithms, keeping runtime reasonably low without extreme micro-optimizations.
 * **Minimal Imports:** Refrain from `import`s besides utilities (`strings`, `time`, `fmt`) and basic standard libraries (`math`, `itertools`, `collections`). When the knowledge of functions and structures are considered vital to the problem solution (graphs, trees, linked lists, union-find, etc.), reimplement them.
 
 ## Thanks!
 
-Many thanks to [Eric Wastl](http://was.tl/), who creates Advent of Code, as well as to the amazing community over at [/r/adventofcode](https://www.reddit.com/r/adventofcode/)!
+Many thanks to Eric Wastl, who creates Advent of Code, as well as to the amazing community over at [/r/adventofcode](https://www.reddit.com/r/adventofcode/)!
 
 ```
 cd internal/day1
