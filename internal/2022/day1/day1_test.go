@@ -2,27 +2,43 @@ package day1_test
 
 import (
 	"github.com/molson82/adventofcode/internal/2022/day1"
+	"github.com/molson82/adventofcode/pkg/utils"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-//const (
-//inputFile = "../../../inputs/day1_input.txt"
-//)
+const (
+	inputFile  = "./input.txt"
+	sampleFile = "./sample.txt"
+)
 
 var _ = Describe("Day1", func() {
 
-	sampleInput := []string{"199", "200", "208", "210", "200", "207", "240", "269", "260", "263"}
-
 	Context("Part 1 Sample", func() {
-		It("should equal 7", func() {
-			Expect(day1.Part1(sampleInput)).To(Equal(7))
+		It("should equal 24000", func() {
+			input := utils.ReadInput(sampleFile)
+			Expect(day1.Part1(input)).To(Equal(24000))
 		})
 	})
 
 	Context("Part 2 Sample", func() {
-		It("should equal 5", func() {
-			Expect(day1.Part2(sampleInput)).To(Equal(5))
+		It("should equal 45000", func() {
+			input := utils.ReadInput(sampleFile)
+			Expect(day1.Part2(input)).To(Equal(45000))
+		})
+	})
+
+	Context("Part 1 Real Input", func() {
+		It("should equal 69528", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(day1.Part1(input)).To(Equal(69528))
+		})
+	})
+
+	Context("Part 2 Sample", func() {
+		It("should equal 206152", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(day1.Part2(input)).To(Equal(206152))
 		})
 	})
 })
