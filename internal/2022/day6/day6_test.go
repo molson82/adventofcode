@@ -40,9 +40,24 @@ var _ = Describe("Day6", func() {
 	})
 
 	Context("Part 2 Sample", func() {
-		It("should equal 0", func() {
-			input := utils.ReadInput(sampleFile)
-			Expect(Part2(input)).To(Equal(0))
+		It("should equal list of inputs", func() {
+			inputs := []input{
+				{Input: "mjqjpqmgbljsphdztnvjfqwrcgsmlb", Result: 19},
+				{Input: "bvwbjplbgvbhsrlpgdmjqwftvncz", Result: 23},
+				{Input: "nppdvjthqldpwncqszvftbrmjlhg", Result: 23},
+				{Input: "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", Result: 29},
+				{Input: "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", Result: 26},
+			}
+			for _, v := range inputs {
+				Expect(Part2(v.Input)).To(Equal(v.Result))
+			}
+		})
+	})
+
+	Context("Part 2 Input", func() {
+		It("should equal 2383", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(Part2(input[0])).To(Equal(2383))
 		})
 	})
 })
