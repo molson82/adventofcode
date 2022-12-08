@@ -14,16 +14,23 @@ const (
 var _ = Describe("Day0", func() {
 
 	Context("Part 1 Sample", func() {
-		It("should equal 0", func() {
+		It("should equal 95437", func() {
 			input := utils.ReadInput(sampleFile)
-			Expect(Part1(input)).To(Equal(0))
+			Expect(Part1(input)).To(Equal(95437))
 		})
 	})
 
-	Context("Part 2 Sample", func() {
-		It("should equal 0", func() {
-			input := utils.ReadInput(sampleFile)
-			Expect(Part2(input)).To(Equal(0))
-		})
-	})
+	//Context("Part 1 Input", func() {
+	//It("should equal ", func() {
+	//input := utils.ReadInput(inputFile)
+	//Expect(Part1(input)).To(Not(Equal(0)))
+	//})
+	//})
+
+	//Context("Part 2 Sample", func() {
+	//It("should equal 0", func() {
+	//input := utils.ReadInput(sampleFile)
+	//Expect(Part2(input)).To(Equal(0))
+	//})
+	//})
 })
