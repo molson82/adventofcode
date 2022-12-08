@@ -103,9 +103,20 @@ func (fs *FileSystem) BuildFileSystem(input []string) {
 			sizeInt, err := strconv.ParseInt(size, 10, 64)
 			utils.CheckErr(err)
 			name := strings.Split(line, " ")[1]
-			fs.AddFile(name, int(sizeInt))
+			num := int(sizeInt)
+			fs.AddFile(name, num)
+			fs.Current.Size += num
+			updateParentSize(fs.Current, num)
 		}
 	}
+}
+
+func updateParentSize(dir *Directory, size int) {
+	if dir.Parent == nil {
+		return
+	}
+	dir.Parent.Size += size
+	updateParentSize(dir.Parent, size)
 }
 
 func BFS(root *Directory) []int {
@@ -114,10 +125,7 @@ func BFS(root *Directory) []int {
 	}
 
 	var ans []int
-	fmt.Println("root: ", root.Name)
-	root.GetSize(0)
 	ans = append(ans, root.Size)
-	fmt.Println("ans: ", ans)
 	for _, v := range root.Directories {
 		ans = append(ans, BFS(v)...)
 	}
@@ -135,9 +143,15 @@ func Part1(input []string) int {
 		res := BFS(v)
 		final = append(final, res...)
 	}
-	fmt.Println(final)
 
-	return 0
+	var sum int
+	for _, v := range final {
+		if v <= 100000 {
+			sum += v
+		}
+	}
+
+	return sum
 }
 
 func Part2(input []string) int {
