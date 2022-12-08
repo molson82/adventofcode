@@ -10,5 +10,5 @@ import (
 func main() {
 	log.Println("Advent of Code")
 
-	log.Printf("Answer: %v", day7.Part1(utils.ReadInput("internal/2022/day7/input.txt")))
+	log.Printf("Answer: %v", day7.Part2(utils.ReadInput("internal/2022/day7/input.txt")))
 }

@@ -16,42 +16,50 @@ var _ = Describe("Day0", func() {
 	Context("Part 1 Sample", func() {
 		It("should equal 95437", func() {
 			input := utils.ReadInput(sampleFile)
-			Expect(Part1(input)).To(Equal(95437))
-		})
-	})
-
-	Context("Part 1 Sample Temp", func() {
-		It("should equal 95437", func() {
-			ans := Part1Temp(sampleFile)
-			Expect(ans).To(Equal(95437))
+			Expect(Part1(input)).To(Equal(int64(95437)))
 		})
 	})
 
 	Context("Part 1 Input", func() {
 		It("should not equal 912377: too low", func() {
 			input := utils.ReadInput(inputFile)
-			Expect(Part1(input)).To(Not(Equal(912377)))
+			Expect(Part1(input)).To(Not(Equal(int64(912377))))
 		})
 	})
 
 	Context("Part 1 Input", func() {
 		It("should not equal 1118530", func() {
 			input := utils.ReadInput(inputFile)
-			Expect(Part1(input)).To(Not(Equal(1118530)))
+			Expect(Part1(input)).To(Not(Equal(int64(1118530))))
 		})
 	})
 
 	Context("Part 1 Input", func() {
 		It("should equal 1086293", func() {
 			input := utils.ReadInput(inputFile)
-			Expect(Part1(input)).To(Equal(1086293))
+			Expect(Part1(input)).To(Equal(int64(1086293)))
 		})
 	})
 
-	//Context("Part 2 Sample", func() {
-	//It("should equal 0", func() {
-	//input := utils.ReadInput(sampleFile)
-	//Expect(Part2(input)).To(Equal(0))
-	//})
-	//})
+	Context("Part 2 Sample", func() {
+		It("should equal 24933642", func() {
+			input := utils.ReadInput(sampleFile)
+			Expect(Part2(input)).To(Equal(int64(24933642)))
+		})
+	})
+
+	Context("Part 2 Input", func() {
+		It("should not equal 355", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(Part2(input)).To(Not(Equal(int64(355))))
+		})
+	})
+
+	Context("Part 2 Input", func() {
+		It("should equal 366028", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(Part2(input)).To(Equal(int64(366028)))
+		})
+	})
+
 })

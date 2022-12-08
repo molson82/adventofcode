@@ -3,6 +3,7 @@ package day7
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -19,31 +20,13 @@ type Directory struct {
 	Parent      *Directory
 	Files       map[string]*File
 	Directories map[string]*Directory
-	Size        int
+	Size        int64
 }
 
 type File struct {
 	Name   string
-	Size   int
+	Size   int64
 	Parent *Directory
-}
-
-func (d *Directory) GetSize(currentTotal int) int {
-	newTotal := currentTotal
-	if d.Files != nil {
-		for _, v := range d.Files {
-			newTotal += v.Size
-		}
-		if d.Directories == nil || len(d.Directories) == 0 {
-			d.Size = newTotal
-			return newTotal
-		} else {
-			for _, v := range d.Directories {
-				return v.GetSize(newTotal)
-			}
-		}
-	}
-	return 0
 }
 
 func (fs *FileSystem) ChangeDirectory(name string) {
@@ -75,7 +58,7 @@ func (fs *FileSystem) List() {
 	}
 }
 
-func (fs *FileSystem) AddFile(name string, size int) {
+func (fs *FileSystem) AddFile(name string, size int64) {
 	fs.Current.Files[name] = &File{Name: name, Size: size, Parent: fs.Current}
 }
 
@@ -103,15 +86,14 @@ func (fs *FileSystem) BuildFileSystem(input []string) {
 			sizeInt, err := strconv.ParseInt(size, 10, 64)
 			utils.CheckErr(err)
 			name := strings.Split(line, " ")[1]
-			num := int(sizeInt)
-			fs.AddFile(name, num)
-			fs.Current.Size += num
-			updateParentSize(fs.Current, num)
+			fs.AddFile(name, sizeInt)
+			fs.Current.Size += sizeInt
+			updateParentSize(fs.Current, sizeInt)
 		}
 	}
 }
 
-func updateParentSize(dir *Directory, size int) {
+func updateParentSize(dir *Directory, size int64) {
 	if dir.Parent == nil {
 		return
 	}
@@ -119,12 +101,12 @@ func updateParentSize(dir *Directory, size int) {
 	updateParentSize(dir.Parent, size)
 }
 
-func BFS(root *Directory) []int {
+func BFS(root *Directory) []int64 {
 	if root == nil {
-		return []int{}
+		return []int64{}
 	}
 
-	var ans []int
+	var ans []int64
 	ans = append(ans, root.Size)
 	for _, v := range root.Directories {
 		ans = append(ans, BFS(v)...)
@@ -133,18 +115,18 @@ func BFS(root *Directory) []int {
 	return ans
 }
 
-func Part1(input []string) int {
+func Part1(input []string) int64 {
 	fs := NewFileSystem()
 	fs.BuildFileSystem(input)
 	fs.ChangeDirectory("/")
 
-	var final []int
+	var final []int64
 	for _, v := range fs.Root.Directories {
 		res := BFS(v)
 		final = append(final, res...)
 	}
 
-	var sum int
+	var sum int64
 	for _, v := range final {
 		if v <= 100000 {
 			sum += v
@@ -154,6 +136,41 @@ func Part1(input []string) int {
 	return sum
 }
 
-func Part2(input []string) int {
-	return 0
+func Part2(input []string) int64 {
+	fs := NewFileSystem()
+	fs.BuildFileSystem(input)
+	fs.ChangeDirectory("/")
+
+	var sizes []int64
+	for _, v := range fs.Root.Directories {
+		sizes = append(sizes, v.Size)
+	}
+	for _, v := range fs.Root.Files {
+		sizes = append(sizes, v.Size)
+	}
+
+	var sum int64
+	for _, v := range sizes {
+		sum = sum + v
+	}
+
+	remove := 30000000 - (70000000 - sum)
+
+	var allSizes []int64
+	for _, v := range fs.Root.Directories {
+		res := BFS(v)
+		allSizes = append(allSizes, res...)
+	}
+
+	var final []int64
+	for _, v := range allSizes {
+		if v >= remove {
+			final = append(final, v)
+		}
+	}
+	sort.Slice(final, func(i, j int) bool {
+		return final[i] < final[j]
+	})
+
+	return final[0]
 }
