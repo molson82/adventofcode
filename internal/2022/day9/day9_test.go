@@ -21,9 +21,16 @@ var _ = Describe("Day0", func() {
 	})
 
 	Context("Part 1 Input", func() {
-		It("should not equal 7015", func() {
+		It("should not equal 7015: too high", func() {
 			input := utils.ReadInput(inputFile)
 			Expect(Part1(input)).To(Not(Equal(7015)))
+		})
+	})
+
+	Context("Part 1 Input", func() {
+		It("should equal 6745", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(Part1(input)).To(Equal(6745))
 		})
 	})
 

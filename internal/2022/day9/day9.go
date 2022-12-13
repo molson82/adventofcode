@@ -69,6 +69,11 @@ func (b *Board) moveTail(dir string) {
 		//fmt.Println("tail is touching diagonal")
 		return
 	}
+	// check if Head is on top of tail
+	if b.Tail.Col == b.Head.Col && b.Tail.Row == b.Head.Row {
+		//fmt.Println("Head is on top of tail")
+		return
+	}
 	// move tail
 	switch dir {
 	case "R":
@@ -129,6 +134,7 @@ func Part1(input []string) int {
 	head := Pos{Row: 4, Col: 0}
 	tail := Pos{Row: 4, Col: 0}
 	board := Board{Width: 6, Height: 5, Head: head, Tail: tail, TailVisits: make(map[Pos]int)}
+	board.TailVisits[head] = 1
 
 	for _, v := range input {
 		l := strings.Split(v, " ")
