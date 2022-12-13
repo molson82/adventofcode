@@ -35,9 +35,9 @@ var _ = Describe("Day0", func() {
 	})
 
 	Context("Part 2 Sample", func() {
-		It("should equal 0", func() {
+		It("should equal 1", func() {
 			input := utils.ReadInput(sampleFile)
-			Expect(Part2(input)).To(Equal(0))
+			Expect(Part2(input)).To(Equal(1))
 		})
 	})
 })
