@@ -20,6 +20,13 @@ var _ = Describe("Day0", func() {
 		})
 	})
 
+	Context("Part 1 Input", func() {
+		It("should not equal 7015", func() {
+			input := utils.ReadInput(inputFile)
+			Expect(Part1(input)).To(Not(Equal(7015)))
+		})
+	})
+
 	Context("Part 2 Sample", func() {
 		It("should equal 0", func() {
 			input := utils.ReadInput(sampleFile)
