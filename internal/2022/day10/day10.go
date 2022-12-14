@@ -2,36 +2,38 @@ package day10
 
 import (
 	"fmt"
-	"time"
+	"strconv"
+	"strings"
+
+	"github.com/molson82/adventofcode/pkg/utils"
 )
 
-var tick = 10
-var x int
-var cycle int
-
-func delayFunc(line string) {
-	time.Sleep(time.Duration(tick * int(time.Millisecond)))
-	// code to do the thing...
-	fmt.Println(line)
-	//cycle++
-	//l := strings.Split(line, " ")
-	//if len(l) == 1 {
-	//// noop use case
-	//return
-	//}
-	//v := l[1]
-	//value, err := strconv.Atoi(v)
-	//utils.CheckErr(err)
-	//x += value
-	//fmt.Printf("cycle: %v | x: %v\n", cycle, x)
-}
-
 func Part1(input []string) int {
-	for i := 0; i < len(input); i++ {
-		delayFunc(input[i])
+	x := 1
+	cycle := 1
+	queue := []int{}
+	for _, v := range input {
+		if v == "noop" {
+			queue = append(queue, 0)
+			continue
+		}
+		// get number from input
+		n := strings.Split(v, "addx ")[1]
+		num, err := strconv.Atoi(n)
+		utils.CheckErr(err)
+		// add number to queue
+		queue = append(queue, 0)
+		queue = append(queue, num)
 	}
-
-	return 0
+	for len(queue) != 0 {
+		fmt.Printf("start cycle: %d | x: %d\n", cycle, x)
+		var t int
+		t, queue = queue[0], queue[1:]
+		x = x + t
+		cycle++
+		fmt.Printf("end cycle: %d | x: %d\n", cycle, x)
+	}
+	return x
 }
 
 func Part2(input []string) int {
