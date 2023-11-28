@@ -1,6 +1,8 @@
 # Advent of Code
 
-Here lies my solutions to [Advent of Code 2021](https://adventofcode.com/2021), an Advent calendar full of programming puzzles from December 1st all the way to Christmas.
+Here lies my solutions to [Advent of Code 2023](https://adventofcode.com/2023), an Advent calendar full of programming puzzles from December 1st all the way to Christmas.
+
+Previous years are also saved in their respective folders.
 
 ## Implementation Goals
 
