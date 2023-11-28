@@ -1,6 +1,8 @@
 package day1
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func Part1() {
 	var ans int
