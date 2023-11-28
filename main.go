@@ -1,14 +1,12 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
-	"github.com/molson82/adventofcode/internal/2022/day10"
-	"github.com/molson82/adventofcode/pkg/utils"
+	day1 "github.com/molson82/adventofcode/2023/1"
 )
 
 func main() {
-	log.Println("Advent of Code")
-
-	log.Printf("Answer: %v", day10.Part1(utils.ReadInput("internal/2022/day10/sample.txt")))
+	fmt.Println("hello AOC!")
+	day1.Part1()
 }
