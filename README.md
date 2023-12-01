@@ -6,7 +6,7 @@ Previous years are also saved in their respective folders.
 
 ## Implementation Goals
 
-The solutions posted here are NOT cleaned-up versions and I will not be aiming for the leaderboards. For all solutions, the main implementation goals were, in descending order:
+The solutions posted here are not cleaned-up versions and I will not be aiming for the leaderboards. For all solutions, the main implementation goals were, in descending order:
 
 - **Readability:** Clean, readable, self-explanatory and commented code above all else.
 - **Input Generalization:** Should work not only for my input but for anyone's, with some assumptions made about it, which are noted when appropriate.
