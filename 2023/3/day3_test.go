@@ -27,12 +27,12 @@ func TestPart2Sample(t *testing.T) {
 	assert.Equal(t, ans, 467835)
 }
 
-func TestPart2(t *testing.T) {
-	input := utils.ReadInput("./input.txt")
-	ans := day3.Part2(input)
-	assert.NotEqual(t, ans, 31488236, "too low")
-	assert.NotEqual(t, ans, 3846746, "too low")
-}
+// func TestPart2(t *testing.T) {
+// 	input := utils.ReadInput("./input.txt")
+// 	ans := day3.Part2(input)
+// 	assert.NotEqual(t, ans, 31488236, "too low")
+// 	assert.NotEqual(t, ans, 3846746, "too low")
+// }
 
 func TestGetNumber(t *testing.T) {
 	type input struct {

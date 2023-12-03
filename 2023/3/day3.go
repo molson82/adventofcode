@@ -41,14 +41,70 @@ func Part1(lines []string) int {
 }
 
 func Part2(lines []string) int {
-	ans = 0
-	top = 0
-	right = len(lines[0]) - 1
-	left = 0
-	bottom = len(lines) - 1
+	totalGearRatio := 0
 
-	fmt.Println("\n2023/3 part2 ans: ", ans)
-	return ans
+	for i, line := range lines {
+		for j, c := range line {
+			if c == '*' {
+				gearRatio, isGear := calculateGearRatio(i, j, lines)
+				if isGear {
+					totalGearRatio += gearRatio
+				}
+			}
+		}
+	}
+
+	fmt.Println("\n2023/3 part2 ans: ", totalGearRatio)
+	return totalGearRatio
+}
+
+func calculateGearRatio(x, y int, lines []string) (int, bool) {
+	numbers := make([]int, 0, 2)
+
+	// New function to check and add number from a given direction
+	addNumberIfPresent := func(dx, dy int) {
+		nx, ny := x+dx, y+dy
+		if nx >= 0 && nx < len(lines) && ny >= 0 && ny < len(lines[nx]) {
+			if start, number, err := getNumber(nx, ny, lines); err == nil {
+				fmt.Println("num: ", number)
+				if start == ny || (dx != 0 && start <= y && y <= ny) { // Correctly identify the starting point of the number
+					fmt.Println("num: ", number)
+					numbers = append(numbers, number)
+				}
+			}
+		}
+	}
+
+	// Check all four directions
+	addNumberIfPresent(-1, 0) // Up
+	addNumberIfPresent(1, 0)  // Down
+	addNumberIfPresent(0, -1) // Left
+	addNumberIfPresent(0, 1)  // Right
+
+	if len(numbers) == 2 {
+		return numbers[0] * numbers[1], true
+	}
+	return 0, false
+}
+
+// Updated GetNumber function
+func getNumber(x, y int, lines []string) (int, int, error) {
+	line := lines[x]
+	if y < 0 || y >= len(line) || !unicode.IsDigit(rune(line[y])) {
+		return 0, 0, fmt.Errorf("not a number")
+	}
+
+	start, end := y, y
+	for start > 0 && unicode.IsDigit(rune(line[start-1])) {
+		start--
+	}
+	for end < len(line)-1 && unicode.IsDigit(rune(line[end+1])) {
+		end++
+	}
+
+	numberStr := line[start : end+1]
+	number, err := strconv.Atoi(numberStr)
+	return start, number, err
 }
 
 func initializeBounds(lines []string) {
