@@ -18,6 +18,20 @@ const (
 	humToLocKey     string = "humidity-to-location map:"
 )
 
+// Each row of a "Map" contains three numbers:
+//   - Destination Range Start
+//   - Source Range Start
+//   - Range length
+//
+// Example: In the "seed-to-soil" map with row:
+//
+//	[50 98 2]
+//
+// This info means:
+//   - source "seed" #98 --> dest "soil" #50
+//   - source "seed" #99 --> dest "soil" #51
+//
+// Because of the range length 2
 type Almanac struct {
 	Seeds    []int
 	SoilMap  [][]int
@@ -32,6 +46,7 @@ type Almanac struct {
 func Part1(lines []string) int {
 	var ans int
 	almanac := BuildAlmanac(lines)
+
 	fmt.Printf("almanac: %+v", almanac)
 	fmt.Println("2023/5 part1 ans: ", ans)
 	return ans
