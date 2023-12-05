@@ -30,6 +30,7 @@ func TestPart2(t *testing.T) {
 	input := utils.ReadInput("./input.txt")
 	ans := day4.Part2(input)
 	assert.NotEqual(t, ans, 32184, "Too Low")
+	assert.Equal(t, ans, 13114317)
 }
 
 func TestParseCard(t *testing.T) {
