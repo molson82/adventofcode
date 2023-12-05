@@ -26,6 +26,12 @@ func TestPart1(t *testing.T) {
 	assert.Equal(t, ans, 24706)
 }
 
+func TestPart2(t *testing.T) {
+	input := utils.ReadInput("./input.txt")
+	ans := day4.Part2(input)
+	assert.NotEqual(t, ans, 32184, "Too Low")
+}
+
 func TestParseCard(t *testing.T) {
 	type input struct {
 		cardString string

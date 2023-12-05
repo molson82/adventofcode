@@ -33,66 +33,45 @@ func Part1(lines []string) int {
 	return ans
 }
 
-var part2Pile []Card
-var stackedPile []Card
+var pile []Card
 
 func Part2(lines []string) int {
+	pile = []Card{}
+	var ans int
+	stack := make(map[int]int)
+
 	for _, l := range lines {
 		newCard := ParseCard(l)
 		newCard.CalcScore()
-		part2Pile = append(part2Pile, newCard)
-		stackedPile = append(stackedPile, newCard)
+		pile = append(pile, newCard)
+		stack[newCard.Num] = 1
 	}
-	ProcessStack(part2Pile)
-	PrintOrder(stackedPile)
-	fmt.Println("\n2023/4 part2 ans: ", len(stackedPile))
-	return len(stackedPile)
+	ProcessStack(stack)
+	for _, v := range stack {
+		ans += v
+	}
+	fmt.Println("\n2023/4 part2 ans: ", ans)
+	return ans
 }
 
-func ProcessStack(cards []Card) {
-	for i := 0; i < 2; i++ {
-		c := stackedPile[i]
-		fmt.Println("\ncard: ", c.Num)
-		fmt.Printf("matches: %v\n", c.NumOfMatches)
-		if c.NumOfMatches != 0 {
-			cardSection := GetCardsFromStack(c.Num, c.Num+c.NumOfMatches-1, part2Pile)
-			PrintOrder(cardSection)
-			// find first index of first card from GetCardsFromStack
-			var index int
-			for j, q := range stackedPile {
-				if q.Num == cardSection[0].Num {
-					index = j
-				}
+func ProcessStack(stack map[int]int) {
+	card := 1
+	for card < len(stack) {
+		s := stack[card]
+		for i := 0; i < s; i++ {
+			copies := GetCardsFromStack(card, card+pile[card-1].NumOfMatches-1, pile)
+			// fmt.Printf("\nCard %v | num: %v NumOfMatches: %v | Copies: ", card, pile[card-1].Num, pile[card-1].NumOfMatches)
+			// PrintOrder(copies)
+			for _, c := range copies {
+				stack[c.Num] = stack[c.Num] + 1
 			}
-			fmt.Println("index: ", index)
-			stackedPile = insertCards(stackedPile, cardSection, index+1)
-			fmt.Println()
-			PrintOrder(stackedPile)
 		}
+		card++
 	}
-}
-
-func insertCards(destination []Card, cardsToInsert []Card, startIndex int) []Card {
-	if startIndex < 0 || startIndex > len(destination) {
-		return nil
-	}
-
-	// Create a new slice to hold the combined result
-	result := make([]Card, len(destination)+len(cardsToInsert))
-
-	// Copy elements from the destination slice up to the start index
-	copy(result, destination[:startIndex])
-
-	// Insert the new cards
-	copy(result[startIndex:], cardsToInsert)
-
-	// Copy the remaining elements from the original slice
-	copy(result[startIndex+len(cardsToInsert):], destination[startIndex:])
-
-	return result
 }
 
 func GetCardsFromStack(start, end int, pile []Card) []Card {
+	// fmt.Println("len: ", len(pile))
 	return pile[start : end+1]
 }
 
