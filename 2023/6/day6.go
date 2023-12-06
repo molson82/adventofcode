@@ -17,14 +17,11 @@ func Part1(lines []string) int {
 	races := GetRaces(lines)
 	winList := []int{}
 	for _, r := range races {
-		// calc # of ways to win
-		// fmt.Println("race: ", r)
 		var wins int
 		for i := 0; i < r.Time; i++ {
 			timeLeft := r.Time - i
 			distance := timeLeft * i
 			if distance > r.Distance {
-				// fmt.Printf("Try: %v | Win: %v\n", i, distance)
 				wins++
 			}
 		}
@@ -38,10 +35,24 @@ func Part1(lines []string) int {
 }
 
 func Part2(lines []string) int {
-	var ans int
-	// code here...
+	ans := 1
+	timeS := strings.Join(strings.Fields(strings.Split(lines[0], "Time: ")[1]), "")
+	distanceS := strings.Join(strings.Fields(strings.Split(lines[1], "Distance: ")[1]), "")
+
+	time := utils.Str_to_Int(timeS)
+	distance := utils.Str_to_Int(distanceS)
+
+	fmt.Printf("time: %v | distance: %v\n", time, distance)
+	for i := 0; i < time; i++ {
+		timeLeft := time - i
+		d := timeLeft * i
+		if d > distance {
+			ans++
+		}
+	}
+
 	fmt.Println("2023/6 part2 ans: ", ans)
-	return ans
+	return ans - 1
 }
 
 func GetRaces(lines []string) []Race {
