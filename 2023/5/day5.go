@@ -1,229 +1,406 @@
 package day5
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"math"
+	"sort"
+	"strconv"
 	"strings"
-
-	"github.com/molson82/adventofcode/pkg/utils"
 )
 
-const (
-	seedKey         string = "seeds:"
-	seedToSoilKey   string = "seed-to-soil map:"
-	soilToFertKey   string = "soil-to-fertilizer map:"
-	fertToWaterKey  string = "fertilizer-to-water map:"
-	waterToLightKey string = "water-to-light map:"
-	lightToTempKey  string = "light-to-temperature map:"
-	tempToHumKey    string = "temperature-to-humidity map:"
-	humToLocKey     string = "humidity-to-location map:"
-)
+// PartOne solves the first problem of day 5 of Advent of Code 2023.
+func PartOne(r io.Reader, w io.Writer) (int, error) {
+	almanac, err := almanacFromReader(r)
+	if err != nil {
+		return 0, fmt.Errorf("could not read input: %w", err)
+	}
 
-// Each row of a "Map" contains three numbers:
-//   - Destination Range Start
-//   - Source Range Start
-//   - Range length
-//
-// Example: In the "seed-to-soil" map with row:
-//
-//	[50 98 2]
-//
-// This info means:
-//   - source "seed" #98 --> dest "soil" #50
-//   - source "seed" #99 --> dest "soil" #51
-//
-// Because of the range length 2
-type Almanac struct {
-	Seeds    []int
-	SoilMap  [][]int
-	FertMap  [][]int
-	WaterMap [][]int
-	LightMap [][]int
-	TempMap  [][]int
-	HumMap   [][]int
-	LocMap   [][]int
-}
-
-func Part1(lines []string) int {
-	almanac := BuildAlmanac(lines)
-
-	seedToSoilPlot := BuildPlot(almanac.SoilMap)
-	soilToFertPlot := BuildPlot(almanac.FertMap)
-	fertToWaterPlot := BuildPlot(almanac.WaterMap)
-	waterToLightPlot := BuildPlot(almanac.LightMap)
-	lightToTempPlot := BuildPlot(almanac.TempMap)
-	tempToHumPlot := BuildPlot(almanac.HumMap)
-	humToLocPlot := BuildPlot(almanac.LocMap)
-
-	// get location of each seed
-	minLoc := 999999999999
-	for _, s := range almanac.Seeds {
-		var soil int
-		if t, ok := seedToSoilPlot[s]; !ok {
-			soil = s
-		} else {
-			soil = t
-		}
-		// fmt.Printf("seed: %v | soil: %v\n", s, soil)
-
-		var fert int
-		if t, ok := soilToFertPlot[soil]; !ok {
-			fert = soil
-		} else {
-			fert = t
-		}
-		// fmt.Printf("soil: %v | fert: %v\n", soil, fert)
-
-		var water int
-		if t, ok := fertToWaterPlot[fert]; !ok {
-			water = fert
-		} else {
-			water = t
-		}
-		// fmt.Printf("fert: %v | water: %v\n", fert, water)
-
-		var light int
-		if t, ok := waterToLightPlot[water]; !ok {
-			light = water
-		} else {
-			light = t
-		}
-		// fmt.Printf("water: %v | light: %v\n", water, light)
-
-		var temp int
-		if t, ok := lightToTempPlot[light]; !ok {
-			temp = light
-		} else {
-			temp = t
-		}
-		// fmt.Printf("light: %v | temp: %v\n", light, temp)
-
-		var hum int
-		if t, ok := tempToHumPlot[temp]; !ok {
-			hum = temp
-		} else {
-			hum = t
-		}
-		// fmt.Printf("temp: %v | hum: %v\n", temp, hum)
-
-		var loc int
-		if t, ok := humToLocPlot[hum]; !ok {
-			loc = hum
-		} else {
-			loc = t
-		}
-		// fmt.Printf("hum: %v | loc: %v\n", hum, loc)
-
-		if loc < minLoc {
-			minLoc = loc
+	seedRanges := make([]interval, len(almanac.seeds))
+	for i, seed := range almanac.seeds {
+		// using intervals of 1 to share code with PartTwo
+		seedRanges[i] = interval{
+			start: seed,
+			end:   seed + 1,
 		}
 	}
 
-	fmt.Println("2023/5 part1 ans: ", minLoc)
-	return minLoc
+	final := almanac.convert(seedRanges)
+
+	_, err = fmt.Fprintf(w, "2023/5 Part 1 ans: %d\n", final[0].start)
+	if err != nil {
+		return 0, fmt.Errorf("could not write answer: %w", err)
+	}
+
+	return final[0].start, nil
 }
 
-func Part2() {
-	var ans int
-	// code here...
-	fmt.Println("2023/5 part2 ans: ", ans)
-}
+// PartTwo solves the second problem of day 5 of Advent of Code 2023.
+func PartTwo(r io.Reader, w io.Writer) (int, error) {
+	almanac, err := almanacFromReader(r)
+	if err != nil {
+		return 0, fmt.Errorf("could not read input: %w", err)
+	}
 
-func BuildPlot(m [][]int) map[int]int {
-	plot := make(map[int]int)
-	for _, v := range m {
-		destStart := v[0]
-		sourceStart := v[1]
-		length := v[2]
-
-		plot[sourceStart] = destStart
-		for i := 1; i < length; i++ {
-			plot[sourceStart+i] = destStart + i
+	seedRanges := make([]interval, len(almanac.seeds)/2)
+	for i := range seedRanges {
+		start := almanac.seeds[2*i]
+		length := almanac.seeds[2*i+1]
+		seedRanges[i] = interval{
+			start: start,
+			end:   start + length,
 		}
 	}
 
-	return plot
+	final := almanac.convert(seedRanges)
+
+	_, err = fmt.Fprintf(w, "2023/5 Part 2 ans: %d\n", final[0].start)
+	if err != nil {
+		return 0, fmt.Errorf("could not write answer: %w", err)
+	}
+
+	return final[0].start, nil
 }
 
-func BuildAlmanac(lines []string) Almanac {
-	var almanac Almanac
-	tMap := []string{}
-	for i, l := range lines {
-		tMap = append(tMap, l)
+//=== Intervals: sorting and merging ===========================================
 
-		// get seeds
-		if strings.Contains(l, seedKey) {
-			seedStr := strings.Fields(strings.Split(l, seedKey)[1])
-			seedList := []int{}
-			for _, s := range seedStr {
-				seedList = append(seedList, utils.Str_to_Int(s))
+type interval struct {
+	start int // inclusive
+	end   int // exclusive
+}
+
+func (i interval) less(j interval) bool {
+	if i.start == j.start {
+		return i.end < j.end
+	}
+	return i.start < j.start
+}
+
+func sortIntervals(intervals []interval) {
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i].less(intervals[j])
+	})
+}
+
+func mergeIntervals(intervals []interval) []interval {
+	sortIntervals(intervals)
+
+	var merged []interval
+	for _, i := range intervals {
+		if len(merged) == 0 || merged[len(merged)-1].end < i.start {
+			merged = append(merged, i)
+		} else if merged[len(merged)-1].end < i.end {
+			merged[len(merged)-1].end = i.end
+		}
+	}
+
+	return merged
+}
+
+//=== Mapping ranges to new values =============================================
+
+func (a almanac) convert(seedRanges []interval) []interval {
+	farmRanges := mergeIntervals(seedRanges)
+	for _, m := range a.maps {
+		farmRanges = m.convert(farmRanges)
+	}
+	return farmRanges
+}
+
+func (m almanacMap) convert(farmRanges []interval) []interval {
+	var converted []interval
+
+	// This algorithm preprocesses the map  ranges so that there are no gaps
+	// before, between, or after them. Each farm range is guaranteed to fit into
+	// one or more map ranges. We also guarantee that the farm ranges are sorted
+	// and non-overlapping, so that we can process them in order without ever
+	// having to backtrack.
+
+	sort.Slice(m.ranges, func(i, j int) bool {
+		return m.ranges[i].match.less(m.ranges[j].match)
+	})
+
+	// We fill in the gaps between the ranges with dummy ranges with a shift
+	// value of zero. This allows us to implement a simpler algorithm that
+	// handles the default case where a source number should be mapped to the
+	// same destination number.
+	//
+	// NOTE: the ranges in the input data don't have gaps between them but we'll
+	// assume that they might since this property isn't mentioned in the problem
+	// statement.
+
+	var mapRanges []almanacRange
+
+	start := math.MinInt
+
+	for i := range m.ranges {
+		if m.ranges[i].match.start > start {
+			mapRanges = append(mapRanges, almanacRange{
+				match: interval{
+					start: start,
+					end:   m.ranges[i].match.start,
+				},
+				shift: 0,
+			})
+		}
+
+		mapRanges = append(mapRanges, m.ranges[i])
+		start = m.ranges[i].match.end
+	}
+
+	mapRanges = append(mapRanges, almanacRange{
+		match: interval{
+			start: start,
+			end:   math.MaxInt,
+		},
+		shift: 0,
+	})
+
+	// We keep track of which farm range and map range we are at.
+	// We will move forward with either one of the indices at each step.
+	fr, mr := 0, 0
+
+	for fr < len(farmRanges) {
+		// The current farm range can't end before the current map range starts.
+		// This is one of the algorithm's invariants.
+		if farmRanges[fr].end <= mapRanges[mr].match.start {
+			panic("current interval ends before current range starts")
+		}
+
+		// The current farm range can't start before the current map range.
+		// This is one of the algorithm's invariants.
+		if farmRanges[fr].start < mapRanges[mr].match.start {
+			panic("current interval starts before current range starts")
+		}
+
+		// If the farm range ends within the map range, we shift the entire farm
+		// range and move on the next farm range.
+		if farmRanges[fr].end <= mapRanges[mr].match.end {
+			shifted := interval{
+				start: farmRanges[fr].start + mapRanges[mr].shift,
+				end:   farmRanges[fr].end + mapRanges[mr].shift,
 			}
-			almanac.Seeds = seedList
-		}
-		// seed to soil map
-		if strings.Contains(l, seedToSoilKey) {
-			tMap = []string{}
+			converted = append(converted, shifted)
+			fr++
 			continue
 		}
-		// soil to fert map
-		if strings.Contains(l, soilToFertKey) {
-			// build seed to soil map
-			almanac.SoilMap = BuildMap(tMap[:len(tMap)-2])
-			tMap = []string{}
+
+		// If the farm range begins after the current map range ends, we move on
+		// to the next map range. This can happen because of gaps between farm
+		// ranges.
+		if farmRanges[fr].start >= mapRanges[mr].match.end {
+			mr++
 			continue
 		}
-		// fert to water map
-		if strings.Contains(l, fertToWaterKey) {
-			// build soil to fert map
-			almanac.FertMap = BuildMap(tMap[:len(tMap)-2])
-			tMap = []string{}
+
+		// If the farm range extends beyond the map range, we shift the part of
+		// the farm range that is within the map range and move on to the next
+		// map range with what remains of the farm range.
+		if farmRanges[fr].end > mapRanges[mr].match.end {
+			within := interval{
+				start: farmRanges[fr].start,
+				end:   mapRanges[mr].match.end,
+			}
+			remainder := interval{
+				start: mapRanges[mr].match.end,
+				end:   farmRanges[fr].end,
+			}
+
+			shifted := interval{
+				start: within.start + mapRanges[mr].shift,
+				end:   within.end + mapRanges[mr].shift,
+			}
+			converted = append(converted, shifted)
+
+			farmRanges[fr] = remainder
+			mr++
 			continue
 		}
-		// water to light map
-		if strings.Contains(l, waterToLightKey) {
-			// build fert to water map
-			almanac.WaterMap = BuildMap(tMap[:len(tMap)-2])
-			tMap = []string{}
-			continue
-		}
-		// light to temp map
-		if strings.Contains(l, lightToTempKey) {
-			// build water to light
-			almanac.LightMap = BuildMap(tMap[:len(tMap)-2])
-			tMap = []string{}
-			continue
-		}
-		// temp to hum map
-		if strings.Contains(l, tempToHumKey) {
-			// build light to temp map
-			almanac.TempMap = BuildMap(tMap[:len(tMap)-2])
-			tMap = []string{}
-			continue
-		}
-		// hum to loc map
-		if strings.Contains(l, humToLocKey) {
-			// build temp to hum map
-			almanac.HumMap = BuildMap(tMap[:len(tMap)-2])
-			tMap = []string{}
-			continue
-		}
-		if i == len(lines)-1 {
-			// build hum to loc map
-			almanac.LocMap = BuildMap(tMap)
-		}
+
+		panic("unhandled case")
 	}
-	return almanac
+
+	merged := mergeIntervals(converted)
+
+	return merged
 }
 
-func BuildMap(lines []string) [][]int {
-	var m [][]int
-	for _, l := range lines {
-		numStrs := strings.Fields(l)
-		tempList := []int{}
-		for _, s := range numStrs {
-			n := utils.Str_to_Int(s)
-			tempList = append(tempList, n)
-		}
-		m = append(m, tempList)
+//=== Almanac: definition and parsing ==========================================
+
+type almanac struct {
+	seeds []int
+	maps  []almanacMap
+}
+
+type almanacRange struct {
+	match interval
+	shift int
+}
+
+type almanacMap struct {
+	sourceCategory      string
+	destinationCatogory string
+	ranges              []almanacRange
+}
+
+var (
+	categories = [...]string{
+		"seed",
+		"soil",
+		"fertilizer",
+		"water",
+		"light",
+		"temperature",
+		"humidity",
+		"location",
 	}
-	return m
+)
+
+func almanacFromReader(r io.Reader) (*almanac, error) {
+	lines, err := LinesFromReader(r)
+	if err != nil {
+		return nil, fmt.Errorf("could not read input: %w", err)
+	}
+
+	chunks := splitSlice(lines, func(s string) bool {
+		return s == ""
+	})
+
+	if len(chunks) != len(categories) {
+		return nil, fmt.Errorf("invalid input: expected %d categories, got %d", len(categories), len(chunks))
+	}
+	if len(chunks[0]) != 1 {
+		return nil, fmt.Errorf("invalid input: expected 1 line of seeds, got %d", len(chunks[0]))
+	}
+
+	seeds, err := seedsFromString(chunks[0][0])
+	if err != nil {
+		return nil, fmt.Errorf("could not parse seeds: %w", err)
+	}
+	if len(seeds)%2 != 0 {
+		return nil, fmt.Errorf("invalid input: expected even number of seeds, got %d", len(seeds))
+	}
+
+	var maps []almanacMap
+	for i, chunk := range chunks[1:] {
+		m, err := almanacMapFromStrings(chunk)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse map for category %s: %w", categories[i], err)
+		}
+		if m.sourceCategory != categories[i] {
+			return nil, fmt.Errorf("invalid input: expected category %s, got %s", categories[i], m.sourceCategory)
+		}
+		if m.destinationCatogory != categories[i+1] {
+			return nil, fmt.Errorf("invalid input: expected category %s, got %s", categories[i+1], m.destinationCatogory)
+		}
+		maps = append(maps, m)
+	}
+
+	return &almanac{
+		seeds: seeds,
+		maps:  maps,
+	}, nil
+}
+
+func seedsFromString(s string) ([]int, error) {
+	s = strings.TrimPrefix(s, "seeds: ")
+	return IntsFromString(s, " ")
+}
+
+func almanacMapFromStrings(s []string) (almanacMap, error) {
+	if len(s) < 2 {
+		return almanacMap{}, fmt.Errorf("invalid input: expected at least 2 lines, got %d", len(s))
+	}
+
+	source, destination, err := categoriesFromMapHeader(s[0])
+	if err != nil {
+		return almanacMap{}, fmt.Errorf("could not parse map header: %w", err)
+	}
+
+	var ranges []almanacRange
+	for _, line := range s[1:] {
+		nums, err := IntsFromString(line, " ")
+		if err != nil {
+			return almanacMap{}, fmt.Errorf("could not parse map line: %w", err)
+		}
+		if len(nums) != 3 {
+			return almanacMap{}, fmt.Errorf("invalid input: expected 3 numbers, got %d", len(nums))
+		}
+
+		destinationStart := nums[0]
+		sourceStart := nums[1]
+		length := nums[2]
+
+		ranges = append(ranges, almanacRange{
+			match: interval{
+				start: sourceStart,
+				end:   sourceStart + length,
+			},
+			shift: destinationStart - sourceStart,
+		})
+	}
+
+	return almanacMap{
+		sourceCategory:      source,
+		destinationCatogory: destination,
+		ranges:              ranges,
+	}, nil
+}
+
+func categoriesFromMapHeader(s string) (string, string, error) {
+	s = strings.TrimSuffix(s, " map:")
+	parts := strings.Split(s, "-to-")
+	if len(parts) != 2 {
+		return "", "", fmt.Errorf("invalid input: expected 2 parts, got %d", len(parts))
+	}
+	return parts[0], parts[1], nil
+}
+
+func splitSlice(s []string, f func(string) bool) [][]string {
+	var chunks [][]string
+	var chunk []string
+	for _, v := range s {
+		if f(v) {
+			chunks = append(chunks, chunk)
+			chunk = nil
+		} else {
+			chunk = append(chunk, v)
+		}
+	}
+	if len(chunk) > 0 {
+		chunks = append(chunks, chunk)
+	}
+	return chunks
+}
+
+func IntsFromString(str, sep string) ([]int, error) {
+	words := strings.Split(str, sep)
+
+	ints := make([]int, len(words))
+
+	for i, w := range words {
+		n, err := strconv.Atoi(w)
+		if err != nil {
+			return nil, fmt.Errorf("%q is not an integer", w)
+		}
+
+		ints[i] = n
+	}
+
+	return ints, nil
+}
+
+func LinesFromReader(r io.Reader) ([]string, error) {
+	var lines []string
+
+	s := bufio.NewScanner(r)
+	for s.Scan() {
+		lines = append(lines, s.Text())
+	}
+	if s.Err() != nil {
+		return nil, fmt.Errorf("failed to scan reader: %w", s.Err())
+	}
+
+	return lines, nil
 }
