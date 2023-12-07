@@ -44,18 +44,104 @@ type Almanac struct {
 }
 
 func Part1(lines []string) int {
-	var ans int
 	almanac := BuildAlmanac(lines)
 
-	fmt.Printf("almanac: %+v", almanac)
-	fmt.Println("2023/5 part1 ans: ", ans)
-	return ans
+	seedToSoilPlot := BuildPlot(almanac.SoilMap)
+	soilToFertPlot := BuildPlot(almanac.FertMap)
+	fertToWaterPlot := BuildPlot(almanac.WaterMap)
+	waterToLightPlot := BuildPlot(almanac.LightMap)
+	lightToTempPlot := BuildPlot(almanac.TempMap)
+	tempToHumPlot := BuildPlot(almanac.HumMap)
+	humToLocPlot := BuildPlot(almanac.LocMap)
+
+	// get location of each seed
+	minLoc := 999999999999
+	for _, s := range almanac.Seeds {
+		var soil int
+		if t, ok := seedToSoilPlot[s]; !ok {
+			soil = s
+		} else {
+			soil = t
+		}
+		// fmt.Printf("seed: %v | soil: %v\n", s, soil)
+
+		var fert int
+		if t, ok := soilToFertPlot[soil]; !ok {
+			fert = soil
+		} else {
+			fert = t
+		}
+		// fmt.Printf("soil: %v | fert: %v\n", soil, fert)
+
+		var water int
+		if t, ok := fertToWaterPlot[fert]; !ok {
+			water = fert
+		} else {
+			water = t
+		}
+		// fmt.Printf("fert: %v | water: %v\n", fert, water)
+
+		var light int
+		if t, ok := waterToLightPlot[water]; !ok {
+			light = water
+		} else {
+			light = t
+		}
+		// fmt.Printf("water: %v | light: %v\n", water, light)
+
+		var temp int
+		if t, ok := lightToTempPlot[light]; !ok {
+			temp = light
+		} else {
+			temp = t
+		}
+		// fmt.Printf("light: %v | temp: %v\n", light, temp)
+
+		var hum int
+		if t, ok := tempToHumPlot[temp]; !ok {
+			hum = temp
+		} else {
+			hum = t
+		}
+		// fmt.Printf("temp: %v | hum: %v\n", temp, hum)
+
+		var loc int
+		if t, ok := humToLocPlot[hum]; !ok {
+			loc = hum
+		} else {
+			loc = t
+		}
+		// fmt.Printf("hum: %v | loc: %v\n", hum, loc)
+
+		if loc < minLoc {
+			minLoc = loc
+		}
+	}
+
+	fmt.Println("2023/5 part1 ans: ", minLoc)
+	return minLoc
 }
 
 func Part2() {
 	var ans int
 	// code here...
 	fmt.Println("2023/5 part2 ans: ", ans)
+}
+
+func BuildPlot(m [][]int) map[int]int {
+	plot := make(map[int]int)
+	for _, v := range m {
+		destStart := v[0]
+		sourceStart := v[1]
+		length := v[2]
+
+		plot[sourceStart] = destStart
+		for i := 1; i < length; i++ {
+			plot[sourceStart+i] = destStart + i
+		}
+	}
+
+	return plot
 }
 
 func BuildAlmanac(lines []string) Almanac {

@@ -13,3 +13,9 @@ func TestPart1Sample(t *testing.T) {
 	ans := day5.Part1(sample)
 	assert.Equal(t, ans, 35)
 }
+
+func TestPart1(t *testing.T) {
+	input := utils.ReadInput("./input.txt")
+	ans := day5.Part1(input)
+	assert.Equal(t, ans, 0)
+}
