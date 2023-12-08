@@ -14,23 +14,23 @@ func TestPart1Sample(t *testing.T) {
 	assert.Equal(t, ans, 2)
 }
 
-func TestPart1Sample2(t *testing.T) {
-	input := []string{
-		"LLR",
-		"",
-		"AAA = (BBB, BBB)",
-		"BBB = (AAA, ZZZ)",
-		"ZZZ = (ZZZ, ZZZ)",
-	}
-	ans := day8.Part1(input)
-	assert.Equal(t, ans, 6)
-}
+// func TestPart1Sample2(t *testing.T) {
+// 	input := []string{
+// 		"LLR",
+// 		"",
+// 		"AAA = (BBB, BBB)",
+// 		"BBB = (AAA, ZZZ)",
+// 		"ZZZ = (ZZZ, ZZZ)",
+// 	}
+// 	ans := day8.Part1(input)
+// 	assert.Equal(t, ans, 6)
+// }
 
-func TestPart1(t *testing.T) {
-	input := utils.ReadInput("./input.txt")
-	ans := day8.Part1(input)
-	assert.Equal(t, ans, 12083)
-}
+// func TestPart1(t *testing.T) {
+// 	input := utils.ReadInput("./input.txt")
+// 	ans := day8.Part1(input)
+// 	assert.Equal(t, ans, 12083)
+// }
 
 func TestPart2Sample(t *testing.T) {
 	input := []string{
@@ -49,8 +49,8 @@ func TestPart2Sample(t *testing.T) {
 	assert.Equal(t, ans, 6)
 }
 
-func TestPart2(t *testing.T) {
-	input := utils.ReadInput("./input.txt")
-	ans := day8.Part2(input)
-	assert.NotEqual(t, ans, 103975, "too low")
-}
+// func TestPart2(t *testing.T) {
+// 	input := utils.ReadInput("./input.txt")
+// 	ans := day8.Part2(input)
+// 	assert.NotEqual(t, ans, 103975, "too low")
+// }

@@ -72,24 +72,37 @@ func Part2(lines []string) int {
 	}
 	steps := stepCount{}
 
+	// NOTES:
+	// The goal is NOT to run them concurrently, but
+	// at the same time, step by step, to see if each starting
+	// point ends in a Z. If not, keep going. So even if one node
+	// does reach a Z, it has to restart in a loop until all
+	// starting nodes have a Z at the end.
+	// Don't think go routines will work since they will go out
+	// of sync and not follow steps at the same rate.
 	for _, sn := range startingNodes {
 		wg.Add(1)
 		go func(sn string, seq []string) {
+			fmt.Println()
 			stepKey := sn
+			fmt.Printf("stepKey: %v | ", stepKey)
 			for i := 0; i < len(seq); i++ {
-				steps.mu.Lock()
-				steps.c++
-				steps.mu.Unlock()
 				if stepKey[len(stepKey)-1] == 'Z' {
+					fmt.Printf("stepKey: %v | ", stepKey)
 					break
 				}
 				s := seq[i]
+				fmt.Printf("step: %v | ", s)
 				currNode := network[stepKey]
 				if s == "R" {
 					stepKey = currNode[1]
 				} else {
 					stepKey = currNode[0]
 				}
+				steps.mu.Lock()
+				fmt.Printf("c++ | ")
+				steps.c++
+				steps.mu.Unlock()
 				// reset loop
 				if i == len(seq)-1 {
 					i = -1
@@ -101,6 +114,6 @@ func Part2(lines []string) int {
 
 	wg.Wait()
 
-	fmt.Println("2023/8 part2 ans: ", steps.c-1)
-	return steps.c - 1
+	fmt.Println("2023/8 part2 ans: ", steps.c)
+	return steps.c
 }
