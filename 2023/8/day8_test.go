@@ -48,3 +48,9 @@ func TestPart2Sample(t *testing.T) {
 	ans := day8.Part2(input)
 	assert.Equal(t, ans, 6)
 }
+
+func TestPart2(t *testing.T) {
+	input := utils.ReadInput("./input.txt")
+	ans := day8.Part2(input)
+	assert.NotEqual(t, ans, 103975, "too low")
+}
