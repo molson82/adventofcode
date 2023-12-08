@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+
+	"github.com/molson82/adventofcode/pkg/utils"
 )
 
 func Part1(lines []string) int {
@@ -104,27 +106,8 @@ func Part2(lines []string) int {
 	wg.Wait()
 
 	// find the least common multiple of all the steps
-	ans = LCM(steps.stepList[0], steps.stepList[1], steps.stepList[2:]...)
+	ans = utils.LCM(steps.stepList[0], steps.stepList[1], steps.stepList[2:]...)
 
 	fmt.Println("2023/8 part2 ans: ", ans)
 	return ans
-}
-
-func LCM(a, b int, integers ...int) int {
-	result := a * b / GCD(a, b)
-
-	for i := 0; i < len(integers); i++ {
-		result = LCM(result, integers[i])
-	}
-
-	return result
-}
-
-func GCD(a, b int) int {
-	for b != 0 {
-		t := b
-		b = a % b
-		a = t
-	}
-	return a
 }
