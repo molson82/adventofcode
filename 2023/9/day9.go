@@ -72,7 +72,8 @@ func GetNextNumLeft(seqList [][]int) int {
 	for i := len(seqList) - 1; i >= 0; i-- {
 		l := seqList[i]
 		firstValue := l[0]
-		ans += firstValue
+		fmt.Println("ans: ", ans)
+		ans -= firstValue
 	}
 	return ans
 }

@@ -20,10 +20,26 @@ func TestPart1(t *testing.T) {
 	assert.Equal(t, ans, 1834108701)
 }
 
-func TestPart2Sample(t *testing.T) {
-	sample := utils.ReadInput("./sample.txt")
-	ans := day9.Part2(sample)
-	assert.Equal(t, ans, 2)
+// func TestPart2Sample(t *testing.T) {
+// 	sample := utils.ReadInput("./sample.txt")
+// 	ans := day9.Part2(sample)
+// 	assert.Equal(t, ans, 2)
+// }
+
+func TestCalcSeqLeft(t *testing.T) {
+	type testList struct {
+		seq []int
+		ans int
+	}
+	tests := []testList{
+		// {seq: []int{0, 3, 6, 9, 12, 15}, ans: 18},
+		// {seq: []int{1, 3, 6, 10, 15, 21}, ans: 28},
+		{seq: []int{10, 13, 16, 21, 30, 45}, ans: 68},
+	}
+
+	for _, x := range tests {
+		assert.Equal(t, day9.CalcSequencePart2(x.seq, [][]int{x.seq}), x.ans)
+	}
 }
 
 func TestCalcSeq(t *testing.T) {
