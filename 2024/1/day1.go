@@ -26,10 +26,31 @@ func Part1(input []string) int {
 	return ans
 }
 
-func Part2() {
+func Part2(input []string) int {
 	var ans int
 	// code here...
+	lists := inputLists(input)
+	l1 := lists[0]
+	l2 := lists[1]
+
+	for _, v := range l1 {
+		occ := countOccurrences(l2, v)
+		temp := v * occ
+		ans += temp
+	}
+
 	fmt.Println("2024/1 part2 ans: ", ans)
+	return ans
+}
+
+func countOccurrences(ns []int, num int) int {
+	count := 0
+	for _, value := range ns {
+		if value == num {
+			count++
+		}
+	}
+	return count
 }
 
 func inputLists(input []string) [][]int {
