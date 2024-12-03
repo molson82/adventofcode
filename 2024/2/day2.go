@@ -32,10 +32,22 @@ func Part1(input []string) int {
 
 func Part2(input []string) int {
 	var ans int
-	// code here...
+
+	numInput := convertInput(input)
+	for _, r := range numInput {
+		isSafe := isReportSafePart2(r, 1, 3)
+		if isSafe {
+			ans++
+		}
+	}
+
 	fmt.Println("2024/2 part2 ans: ", ans)
 
 	return ans
+}
+
+func isReportSafePart2(report []int, min, max int) bool {
+	return isIncreasing(report, min, max) || isDecreasing(report, min, max)
 }
 
 func isReportSafe(report []int, min, max int) bool {
