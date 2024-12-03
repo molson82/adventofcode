@@ -14,11 +14,12 @@ func TestPart1Sample(t *testing.T) {
 	assert.Equal(t, 2, ans)
 }
 
-// func TestPart1(t *testing.T) {
-// 	input := utils.ReadInput("./input.txt")
-// 	ans := day2.Part1(input)
-// 	assert.Equal(t, 0, ans)
-// }
+func TestPart1(t *testing.T) {
+	input := utils.ReadInput("./input.txt")
+	ans := day2.Part1(input)
+	assert.Equal(t, 0, ans)
+}
+
 //
 // func TestPart2Sample(t *testing.T) {
 // 	sample := utils.ReadInput("./sample.txt")
