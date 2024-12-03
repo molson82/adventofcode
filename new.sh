@@ -31,16 +31,20 @@ package day$day
 
 import "fmt"
 
-func Part1() {
+func Part1(input []string) int {
 	var ans int
 	// code here...
 	fmt.Println("$year/$day part1 ans: ", ans)
+
+	return ans
 }
 
-func Part2() {
+func Part2(input []string) int {
 	var ans int
 	// code here...
 	fmt.Println("$year/$day part2 ans: ", ans)
+
+	return ans
 }
 EOF
 
@@ -51,12 +55,34 @@ package day${day}_test
 import (
 	"testing"
 
+	day${day} "github.com/molson82/adventofcode/${year}/${day}"
+	"github.com/molson82/adventofcode/pkg/utils"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPart1(t *testing.T) {
-	assert.True(t, true, "true is true")
+func TestPart1Sample(t *testing.T) {
+	sample := utils.ReadInput("./sample.txt")
+	ans := day${day}.Part1(sample)
+	assert.NotEqual(t, 0, ans)
 }
+
+// func TestPart1(t *testing.T) {
+// 	input := utils.ReadInput("./input.txt")
+// 	ans := day${day}.Part1(input)
+// 	assert.NotEqual(t, 0, ans)
+// }
+//
+// func TestPart2Sample(t *testing.T) {
+// 	sample := utils.ReadInput("./sample.txt")
+// 	ans := day${day}.Part2(sample)
+// 	assert.NotEqual(t, 0, ans)
+// }
+//
+// func TestPart2(t *testing.T) {
+// 	input := utils.ReadInput("./input.txt")
+// 	ans := day${day}.Part2(input)
+// 	assert.NotEqual(t, 0, ans)
+// }
 EOF
 
 # Create empty sample and input files
