@@ -47,7 +47,18 @@ func Part2(input []string) int {
 }
 
 func isReportSafePart2(report []int, min, max int) bool {
-	return isIncreasing(report, min, max) || isDecreasing(report, min, max)
+	if isIncreasing(report, min, max) || isDecreasing(report, min, max) {
+		return true
+	}
+
+	for i := 0; i < len(report); i++ {
+		modifiedReport := utils.RemoveIndex(report, i)
+		if isIncreasing(modifiedReport.([]int), min, max) || isDecreasing(modifiedReport.([]int), min, max) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func isReportSafe(report []int, min, max int) bool {
