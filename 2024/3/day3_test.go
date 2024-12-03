@@ -22,14 +22,15 @@ func TestPart1(t *testing.T) {
 	assert.Equal(t, 169021493, ans)
 }
 
-// func TestPart2Sample(t *testing.T) {
-// 	sample := utils.ReadInput("./sample.txt")
-// 	ans := day3.Part2(sample)
-// 	assert.NotEqual(t, 0, ans)
-// }
-//
-// func TestPart2(t *testing.T) {
-// 	input := utils.ReadInput("./input.txt")
-// 	ans := day3.Part2(input)
-// 	assert.NotEqual(t, 0, ans)
-// }
+func TestPart2Sample(t *testing.T) {
+	sample := utils.ReadInput("./sample2.txt")
+	ans := day3.Part2(sample)
+	assert.Equal(t, 48, ans)
+}
+
+func TestPart2(t *testing.T) {
+	input := utils.ReadInput("./input.txt")
+	ans := day3.Part2(input)
+	assert.NotEqual(t, 113908771, ans, "too high")
+	assert.Equal(t, 111762583, ans)
+}
