@@ -18,9 +18,8 @@ func TestPart1(t *testing.T) {
 	input := utils.ReadInput("./input.txt")
 	ans := day4.Part1(input)
 	assert.NotEqual(t, 2541, ans, "too low")
-	assert.NotEqual(t, 2542, ans, "too low")
-	assert.NotEqual(t, 2546, ans, "too high")
 	assert.NotEqual(t, 2547, ans, "too high")
+	assert.Equal(t, 2545, ans)
 }
 
 // func TestPart2Sample(t *testing.T) {
