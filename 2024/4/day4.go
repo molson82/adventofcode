@@ -49,14 +49,17 @@ func isInBounds(x, y, rows, cols int) bool {
 func countMAS(grid [][]rune) int {
 	count := 0
 	for i := 0; i < len(grid); i++ {
+	grid:
 		for j := 0; j < len(grid[0]); j++ {
 			if grid[i][j] == 'M' {
 				for _, dir := range xDirections {
 					if searchFromPosition(grid, i, j, dir[0], dir[1], "MAS") {
 						// MAS found, check if other direction forms an X
 						fmt.Println("mas found")
-						if isXShape(grid, i+dir[0], j+dir[1], (dir[0])*-1, (dir[1])*-1) {
+						if isXShape(grid, j+dir[0], i+dir[1], dir[0]*-1, dir[1]*-1) {
+							fmt.Println(string(grid[i+dir[1]][j+dir[0]]))
 							count++
+							continue grid
 						}
 					}
 				}
@@ -67,17 +70,19 @@ func countMAS(grid [][]rune) int {
 }
 
 // When the letter is A, verify the letters around it are M & S
-func isXShape(grid [][]rune, x, y int, dx, dy int) bool {
+func isXShape(grid [][]rune, x, y, dx, dy int) bool {
 	// Check bounds to ensure we don't go out of the grid
+	if !isInBounds(x, y, len(grid), len(grid[0])) {
+		return false
+	}
+	// Check the opposite direction for 'M' and 'S'
 	nx, ny := x+dx, y+dy
 	if !isInBounds(nx, ny, len(grid), len(grid[0])) {
 		return false
 	}
-
-	if (grid[ny][nx] == 'M' && grid[(ny)*-1][(nx)*-1] == 'S') || (grid[ny][nx] == 'S' && grid[(ny)*-1][(nx)*-1] == 'M') {
+	if (grid[nx][ny] == 'M' && grid[x-dx][y-dy] == 'S') || (grid[nx][ny] == 'S' && grid[x-dx][y-dy] == 'M') {
 		return true
 	}
-
 	return false
 }
 
