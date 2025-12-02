@@ -12,6 +12,7 @@ func TestPart1Sample(t *testing.T) {
 	sample := utils.ReadInput("./sample.txt")
 	ans := day2.Part1(sample)
 	assert.NotEqual(t, 0, ans)
+	assert.Equal(t, 1227775554, ans)
 }
 
 // func TestPart1(t *testing.T) {
